@@ -1,17 +1,18 @@
 <template>
   <div>
-    clear
-    <!-- <view></view> -->
+    <header class="header">
+      <router-link :to="{ name: 'login'}">로그인</router-link>
+      <router-link :to="{ name: 'signup'}">회원가입</router-link>
+    </header>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-
 export default {
-  name: 'App',
-  components: {
-  }
-}
+  name: "App",
+  components: {},
+};
 </script>
 
 <style>
@@ -21,6 +22,9 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+.header {
+  /* border:1px solid red; */
 }
 </style>
