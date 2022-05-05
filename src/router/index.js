@@ -10,6 +10,7 @@ const router = createRouter({
     history: routerHistory,
     routes: [
         {
+            nane:'home',
             path: '/',
             component: Home
         },
