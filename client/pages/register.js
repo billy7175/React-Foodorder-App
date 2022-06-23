@@ -9,9 +9,10 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.table({ name, email, password });
-    const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API}/register`, {
+    const { data } = await axios.post(`api/register`, {
       name, email, password
     });
+
     // http://localhost:8000/api/register
     // http://localhost:8000/api/register
     console.log('#data', data)
