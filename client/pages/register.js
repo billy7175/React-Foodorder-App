@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from 'axios'
+import Link from "next/link";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -55,6 +56,13 @@ const Register = () => {
             Submit
           </button>
         </form>
+
+        <p className="text-center p-3">
+          Already registered?{" "}
+          <Link href="/login">
+            <a>Login</a>
+          </Link>
+        </p>
       </div>
     </>
   );
