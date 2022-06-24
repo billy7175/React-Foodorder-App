@@ -1,5 +1,6 @@
 import User from '../models/user'
 import { hashPassowrd, comparePassword } from '../utils/auth';
+import jwt from "jsonwebtoken";
 console.log('#hashPassowrd', hashPassowrd)
 console.log('#comparePassword', comparePassword)
 

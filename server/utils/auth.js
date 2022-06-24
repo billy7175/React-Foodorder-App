@@ -6,20 +6,22 @@ import bcrypt from 'bcrypt'
 export const hashPassowrd = (password) => {
     return new Promise((resolve, reject) => {
         bcrypt.genSalt(12, (error, salt) => {
-            if(error) { 
-                reject(error) 
+            if (error) {
+                reject(error)
             }
 
             bcrypt.hash(password, salt, (err, hashedPassword) => {
-                if(err) {
+                if (err) {
                     reject(err)
                 }
                 resolve(hashedPassword)
             })
         })
     })
-} 
-
-export const comparePassword = (password, hashedPassword) => {
-    return bcrypt.compare(password, hashedPassword)
 }
+
+export const comparePassword = (password, hashed) => {
+    return bcrypt.compare(password, hashed); // boolean
+};
+
+
