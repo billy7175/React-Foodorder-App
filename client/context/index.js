@@ -68,6 +68,15 @@ const Provider = ({ children }) => {
     }
   );
 
+  useEffect(() => {
+    const getCsrfToken = async () => {
+      const {data} = await axios.get('/api/csrf-token');
+      console.log('CSRF', data)
+      axios.defaults.headers['X-CSRF-TOKEN'] = data.getCsrfToken;
+    };
+    getCsrfToken();
+  },[])
+
   return (
     <Context.Provider value={{ state, dispatch }}>{children}</Context.Provider>
   );
