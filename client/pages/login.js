@@ -21,6 +21,7 @@ const Login = () => {
   // router
   const router = useRouter();
 
+  // user 데이터가 있으면 메인페이지로 이동
   useEffect(() => {
     if (user !== null) router.push("/");
   }, [user]);
