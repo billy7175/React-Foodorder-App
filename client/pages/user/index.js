@@ -1,39 +1,19 @@
-import { useEffect, useState, useContext } from "react";
+import { useContext } from "react";
 import { Context } from "../../context";
-import axios from "axios";
+import UserRoute from "../../components/routes/UserRoute";
 
 const UserIndex = () => {
-  // state
-  const [hidden, setHidden] = useState(true);
-
   const {
     state: { user },
   } = useContext(Context);
 
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
-  const fetchUser = async () => {
-    try {
-      const { data } = await axios.get("/api/current-user");
-      console.log(data);
-      setHidden(false);
-    } catch (err) {
-      console.log(err);
-      setHidden(true);
-    }
-  };
-
   return (
-    <>
-        {/* <h1 className="jumbotron text-center bg-primary square">Login</h1> */}
-      {!hidden && (
-        <h1 className="jumbotron text-center square bg-primary">
-          <pre>{JSON.stringify(user, null, 4)}</pre>
-        </h1>
-      )}
-    </>
+    <UserRoute>
+      <h1 className="jumbotron text-center square bg-primary">
+        <h2>can you see me ?</h2>
+        <pre>{JSON.stringify(user, null, 4)}</pre>
+      </h1>
+    </UserRoute>
   );
 };
 
