@@ -82,3 +82,8 @@ export const currentUser = async (req,res) => {
     console.log('#currentUser: error ', error)
   }
 }
+
+export const sendTestEmail = async (req, res) => {
+  console.log('send email using SES');
+  res.json({ ok: true })
+}
