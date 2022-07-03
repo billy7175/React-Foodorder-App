@@ -21,7 +21,6 @@ const Login = () => {
   // router
   const router = useRouter();
 
-  // user 데이터가 있으면 메인페이지로 이동
   useEffect(() => {
     if (user !== null) router.push("/");
   }, [user]);
@@ -84,10 +83,16 @@ const Login = () => {
           </button>
         </form>
 
-        <p className="text-center p-3">
+        <p className="text-center pt-3">
           Not yet registered?{" "}
           <Link href="/register">
             <a>Register</a>
+          </Link>
+        </p>
+
+        <p className="text-center">
+          <Link href="/forgot-password">
+            <a className="text-danger">Forgot password</a>
           </Link>
         </p>
       </div>
