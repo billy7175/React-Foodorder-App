@@ -1,5 +1,5 @@
 import User from '../models/user'
-import { hashPassowrd, comparePassword } from '../utils/auth';
+import { hashPassword, comparePassword } from '../utils/auth';
 import jwt from "jsonwebtoken";
 import { nanoid } from 'nanoid'
 import AWS from "aws-sdk";
@@ -14,7 +14,7 @@ const awsConfig = {
 const SES = new AWS.SES(awsConfig);
 
 
-console.log('#hashPassowrd', hashPassowrd)
+console.log('#hashPassword', hashPassword)
 console.log('#comparePassword', comparePassword)
 
 export const register = async (req, res) => {
@@ -32,7 +32,7 @@ export const register = async (req, res) => {
     console.log('#userExist', userExist)
     if (userExist) return res.status(400).send('Email is taken');
 
-    const hashedPassword = await hashPassowrd(password)
+    const hashedPassword = await hashPassword(password)
 
     const user = new User({
       name,
@@ -58,6 +58,8 @@ export const login = async (req, res) => {
     if (!user) return res.status(400).send("No user found");
     // check password
     const match = await comparePassword(password, user.password);
+    if (!match) return res.status(400).send("Wrong password");
+
     // create signed jwt
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
@@ -189,3 +191,27 @@ export const sendTestEmail = async (req, res) => {
       console.log(err);
     });
 };
+
+export const resetPassword = async (req, res) => {
+  try {
+    const { email, code, newPassword } = req.body;
+    // console.table({ email, code, newPassword });
+    const hashedPassword = await hashPassword(newPassword);
+
+    const user = User.findOneAndUpdate(
+      {
+        email,
+        passwordResetCode: code,
+      },
+      {
+        password: hashedPassword,
+        passwordResetCode: "",
+      }
+    ).exec();
+    res.json({ ok: true });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send("Error! Try again.");
+  }
+};
+

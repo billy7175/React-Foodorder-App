@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt'
 // new Promise 사용
 // bcrypt.getSalt() 사용
 
-export const hashPassowrd = (password) => {
+export const hashPassword = (password) => {
     return new Promise((resolve, reject) => {
         bcrypt.genSalt(12, (error, salt) => {
             if (error) {
