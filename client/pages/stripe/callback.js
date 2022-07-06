@@ -11,6 +11,7 @@ const StripeCallback = () => {
   useEffect(() => {
     if (user) {
       axios.post("/api/get-account-status").then((res) => {
+        console.log('#StripeCallback', res)
         window.location.href = "/instructor";
       });
     }
