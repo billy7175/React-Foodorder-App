@@ -1,5 +1,4 @@
 import User from "../models/user";
-// import stripe from "stripe";
 import queryString from "query-string";
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
@@ -52,6 +51,19 @@ export const getAccountStatus = async (req, res) => {
         .select("-password")
         .exec();
       res.json(statusUpdated);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const currentInstructor = async (req, res) => {
+  try {
+    let user = await User.findById(req.user._id).select("-password").exec();
+    if (!user.role.includes("Instructor")) {
+      return res.status(403);
+    } else {
+      res.json({ ok: true });
     }
   } catch (err) {
     console.log(err);
