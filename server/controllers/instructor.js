@@ -60,12 +60,16 @@ export const getAccountStatus = async (req, res) => {
 export const currentInstructor = async (req, res) => {
   try {
     let user = await User.findById(req.auth._id).select("-password").exec();
+    console.log('currentIc')
     if (!user.role.includes("Instructor")) {
+      console.log('강사 권한 X')
       return res.status(403);
     } else {
+      console.log('강사 권한 O')
       res.json({ ok: true });
     }
   } catch (err) {
-    console.log(err);
+    console.log('강사조회 실패')
+    console.log('#currentInstructor', err);
   }
 };
