@@ -16,7 +16,7 @@ const CourseCreate = () => {
     category: "",
     loading: false,
   });
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState({});
   const [preview, setPreview] = useState("");
   const [uploadButtonText, setUploadButtonText] = useState("Upload Image");
 
@@ -29,7 +29,7 @@ const CourseCreate = () => {
     setPreview(window.URL.createObjectURL(file));
     setUploadButtonText(file.name);
     setValues({ ...values, loading: true });
-
+    
     // resize
     Resizer.imageFileResizer(file, 720, 500, "JPEG", 100, 0, async (uri) => {
       try {
@@ -38,6 +38,7 @@ const CourseCreate = () => {
         });
         console.log("IMAGE UPLOADED", data);
         // set image in the state
+        setImage(data);
         setValues({ ...values, loading: false });
       } catch (err) {
         console.log(err);
@@ -47,7 +48,23 @@ const CourseCreate = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleImageRemove = async () => {
+    try {
+      // console.log(values);
+      setValues({ ...values, loading: true });
+      const res = await axios.post("/api/course/remove-image", { image });
+      setImage({});
+      setPreview("");
+      setUploadButtonText("Upload Image");
+      setValues({ ...values, loading: false });
+    } catch (err) {
+      console.log(err);
+      setValues({ ...values, loading: false });
+      toast("Image upload failed. Try later.");
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(values);
   };
@@ -64,9 +81,12 @@ const CourseCreate = () => {
           setValues={setValues}
           preview={preview}
           uploadButtonText={uploadButtonText}
+          handleImageRemove={handleImageRemove}
         />
       </div>
       <pre>{JSON.stringify(values, null, 4)}</pre>
+      <hr />
+      <pre>{JSON.stringify(image, null, 4)}</pre>
     </InstructorRoute>
   );
 };
