@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import InstructorRoute from "../../../../components/routes/InstructorRoute";
 import axios from "axios";
 import { Avatar, Tooltip } from "antd";
 import { EditOutlined, CheckOutlined } from "@ant-design/icons";
+import ReactMarkdown from "react-markdown";
 
 const CourseView = () => {
   const [course, setCourse] = useState({});
@@ -53,6 +54,12 @@ const CourseView = () => {
                     </Tooltip>
                   </div>
                 </div>
+              </div>
+            </div>
+            <hr />
+            <div className="row">
+              <div className="col">
+                <ReactMarkdown source={course.description} />
               </div>
             </div>
           </div>
