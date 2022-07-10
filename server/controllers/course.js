@@ -84,7 +84,7 @@ export const create = async (req, res) => {
 
     const course = await new Course({
       slug: slugify(req.body.name),
-      instructor: req.aut._id,
+      instructor: req.auth._id,
       ...req.body,
     }).save();
 
