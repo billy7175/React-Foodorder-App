@@ -110,6 +110,12 @@ export const read = async (req, res) => {
 
 export const uploadVideo = async (req, res) => {
   try {
+    // console.log("req.user._id", req.user._id);
+    // console.log("req.params.instructorId", req.params.instructorId);
+    if (req.auth._id != req.params.instructorId) {
+      return res.status(400).send("Unauthorized");
+    }
+
     const { video } = req.files;
     // console.log(video);
     if (!video) return res.status(400).send("No video");
@@ -137,10 +143,12 @@ export const uploadVideo = async (req, res) => {
   }
 };
 
-
 export const removeVideo = async (req, res) => {
   try {
-    console.log('#removeVideo')
+    if (req.auth._id != req.params.instructorId) {
+      return res.status(400).send("Unauthorized");
+    }
+
     const { Bucket, Key } = req.body;
     // console.log("VIDEO REMOVE =====> ", req.body);
 
