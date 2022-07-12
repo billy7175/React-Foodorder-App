@@ -1,8 +1,9 @@
 import AWS from "aws-sdk";
 import { nanoid } from "nanoid";
 import Course from "../models/course";
-// import sllugify from "slugify";
+import sllugify from "slugify";
 import slugify from "slugify";
+import { readFileSync } from "fs";
 
 const awsConfig = {
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -74,7 +75,7 @@ export const removeImage = async (req, res) => {
 };
 
 export const create = async (req, res) => {
-  console.log("CREATE COURSE", req.body);
+  // console.log("CREATE COURSE", req.body);
   // return;
   try {
     const alreadyExist = await Course.findOne({
@@ -102,6 +103,35 @@ export const read = async (req, res) => {
       .populate("instructor", "_id name")
       .exec();
     res.json(course);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const uploadVideo = async (req, res) => {
+  try {
+    const { video } = req.files;
+    // console.log(video);
+    if (!video) return res.status(400).send("No video");
+
+    // video params
+    const params = {
+      Bucket: "billy7175-bucket",
+      Key: `${nanoid()}.${video.type.split("/")[1]}`,
+      Body: readFileSync(video.path),
+      ACL: "public-read",
+      ContentType: video.type,
+    };
+
+    // upload to s3
+    S3.upload(params, (err, data) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(400);
+      }
+      console.log(data);
+      res.send(data);
+    });
   } catch (err) {
     console.log(err);
   }
