@@ -68,7 +68,7 @@ const CourseView = () => {
     try {
       setUploading(true);
       const { data } = await axios.post(
-        "/api/course/remove-video",
+        "/api/course/video-remove",
         values.video
       );
       console.log(data);
