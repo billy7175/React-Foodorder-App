@@ -99,6 +99,7 @@ export const create = async (req, res) => {
 
 export const read = async (req, res) => {
   try {
+    console.log(123123123123123123, req.params)
     const course = await Course.findOne({ slug: req.params.slug })
       .populate("instructor", "_id name")
       .exec();

@@ -24,7 +24,6 @@ const CourseView = () => {
 
   const router = useRouter();
   const { slug } = router.query;
-  console.log('#####slug', slug)
 
   useEffect(() => {
     loadCourse();
@@ -106,7 +105,7 @@ const CourseView = () => {
   return (
     <InstructorRoute>
       <div className="contianer-fluid pt-3">
-        <pre>{JSON.stringify(course, null, 4)}</pre>
+      <pre>{JSON.stringify(course, null, 4)}</pre>
         {course && (
           <div className="container-fluid pt-1">
             <div className="media pt-2">
@@ -129,7 +128,12 @@ const CourseView = () => {
 
                   <div className="d-flex pt-4">
                     <Tooltip title="Edit">
-                      <EditOutlined className="h5 pointer text-warning mr-4" />
+                      <EditOutlined
+                        onClick={() =>
+                          router.push(`/instructor/course/edit/${slug}`)
+                        }
+                        className="h5 pointer text-warning mr-4"
+                      />
                     </Tooltip>
                     <Tooltip title="Publish">
                       <CheckOutlined className="h5 pointer text-danger" />
