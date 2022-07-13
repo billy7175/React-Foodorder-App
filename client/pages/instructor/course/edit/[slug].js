@@ -30,7 +30,6 @@ const CourseEdit = () => {
   }, [slug]);
 
   const loadCourse = async () => {
-    console.log('#loadCourse', slug)
     const { data } = await axios.get(`/api/course/${slug}`);
     setValues(data);
   };
@@ -62,32 +61,16 @@ const CourseEdit = () => {
     });
   };
 
-  const handleImageRemove = async () => {
-    try {
-      // console.log(values);
-      setValues({ ...values, loading: true });
-      const res = await axios.post("/api/course/remove-image", { image });
-      setImage({});
-      setPreview("");
-      setUploadButtonText("Upload Image");
-      setValues({ ...values, loading: false });
-    } catch (err) {
-      console.log(err);
-      setValues({ ...values, loading: false });
-      toast("Image upload failed. Try later.");
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       // console.log(values);
-      const { data } = await axios.post("/api/course", {
+      const { data } = await axios.put("/api/course", {
         ...values,
         image,
       });
-      toast("Great! Now you can start adding lessons");
-      router.push("/instructor");
+      toast("Course updated!");
+      // router.push("/instructor");
     } catch (err) {
       toast(err.response.data);
     }
@@ -106,7 +89,7 @@ const CourseEdit = () => {
           setValues={setValues}
           preview={preview}
           uploadButtonText={uploadButtonText}
-          handleImageRemove={handleImageRemove}
+          editPage={true}
         />
       </div>
       {/* <pre>{JSON.stringify(values, null, 4)}</pre>
