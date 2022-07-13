@@ -2,15 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import InstructorRoute from "../../../../components/routes/InstructorRoute";
 import axios from "axios";
-import { Avatar, Tooltip, Button, Modal } from "antd";
+import { Avatar, Tooltip, Button, Modal, List } from "antd";
 import { EditOutlined, CheckOutlined, UploadOutlined } from "@ant-design/icons";
 import ReactMarkdown from "react-markdown";
 import AddLessonForm from "../../../../components/forms/AddLessonForm";
 import { toast } from "react-toastify";
+import Item from "antd/lib/list/Item";
 
 const CourseView = () => {
   const [course, setCourse] = useState({});
-  console.log('#course', course)
   // for lessons
   const [visible, setVisible] = useState(false);
   const [values, setValues] = useState({
@@ -24,6 +24,7 @@ const CourseView = () => {
 
   const router = useRouter();
   const { slug } = router.query;
+  console.log('#####slug', slug)
 
   useEffect(() => {
     loadCourse();
@@ -35,9 +36,24 @@ const CourseView = () => {
   };
 
   // FUNCTIONS FOR ADD LESSON
-  const handleAddLesson = (e) => {
+  const handleAddLesson = async (e) => {
     e.preventDefault();
-    console.log(values);
+    // console.log(values);
+    try {
+      const { data } = await axios.post(
+        `/api/course/lesson/${slug}/${course.instructor._id}`,
+        values
+      );
+      // console.log(data)
+      setValues({ ...values, title: "", content: "", video: {} });
+      setVisible(false);
+      setUploadButtonText("Upload video");
+      setCourse(data);
+      toast("Lesson added");
+    } catch (err) {
+      console.log(err);
+      toast("Lesson add failed");
+    }
   };
 
   const handleVideo = async (e) => {
@@ -90,7 +106,7 @@ const CourseView = () => {
   return (
     <InstructorRoute>
       <div className="contianer-fluid pt-3">
-        {/* <pre>{JSON.stringify(course, null, 4)}</pre> */}
+        <pre>{JSON.stringify(course, null, 4)}</pre>
         {course && (
           <div className="container-fluid pt-1">
             <div className="media pt-2">
@@ -161,6 +177,26 @@ const CourseView = () => {
                 handleVideoRemove={handleVideoRemove}
               />
             </Modal>
+
+            <div className="row pb-5">
+              <div className="col lesson-list">
+                <h4>
+                  {course && course.lessons && course.lessons.length} Lessons
+                </h4>
+                <List
+                  itemLayout="horizontal"
+                  dataSource={course && course.lessons}
+                  renderItem={(item, index) => (
+                    <Item>
+                      <Item.Meta
+                        avatar={<Avatar>{index + 1}</Avatar>}
+                        title={item.title}
+                      ></Item.Meta>
+                    </Item>
+                  )}
+                ></List>
+              </div>
+            </div>
           </div>
         )}
       </div>
