@@ -31,7 +31,9 @@ const CourseEdit = () => {
 
   const loadCourse = async () => {
     const { data } = await axios.get(`/api/course/${slug}`);
+    console.log(data);
     setValues(data);
+    if (data && data.image) setImage(data.image);
   };
 
   const handleChange = (e) => {
@@ -61,11 +63,27 @@ const CourseEdit = () => {
     });
   };
 
+  const handleImageRemove = async () => {
+    try {
+      // console.log(values);
+      setValues({ ...values, loading: true });
+      const res = await axios.post("/api/course/remove-image", { image });
+      setImage({});
+      setPreview("");
+      setUploadButtonText("Upload Image");
+      setValues({ ...values, loading: false });
+    } catch (err) {
+      console.log(err);
+      setValues({ ...values, loading: false });
+      toast("Image upload failed. Try later.");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       // console.log(values);
-      const { data } = await axios.put("/api/course", {
+      const { data } = await axios.put(`/api/course/${slug}`, {
         ...values,
         image,
       });
@@ -83,6 +101,7 @@ const CourseEdit = () => {
       <div className="pt-3 pb-3">
         <CourseCreateForm
           handleSubmit={handleSubmit}
+          handleImageRemove={handleImageRemove}
           handleImage={handleImage}
           handleChange={handleChange}
           values={values}
