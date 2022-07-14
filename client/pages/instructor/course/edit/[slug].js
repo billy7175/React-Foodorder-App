@@ -133,7 +133,7 @@ const CourseEdit = () => {
     // console.log("removed", removed[0]._id);
     setValues({ ...values, lessons: allLessons });
     // send request to server
-    const { data } = await axios.put(`/api/course/${removed[0]._id}`);
+    const { data } = await axios.put(`/api/course/${slug}/${removed[0]._id}`);
     console.log("LESSON DELETED =>", data);
   };
 
@@ -177,6 +177,7 @@ const CourseEdit = () => {
                   avatar={<Avatar>{index + 1}</Avatar>}
                   title={item.title}
                 ></Item.Meta>
+
                 <DeleteOutlined
                   onClick={() => handleDelete(index)}
                   className="text-danger float-right"
