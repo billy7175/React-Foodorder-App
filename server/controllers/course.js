@@ -234,6 +234,39 @@ export const removeLesson = async (req, res) => {
   res.json({ ok: true });
 };
 
-export const updateLesson = async (req,res) => {
-  console.log('#updateLesson')
-}
+export const updateLesson = async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const { courseId, lessonId } = req.params;
+    const { title, content, video, free_preview } = req.body;
+    // find post
+    const course = await Course.findOne({ slug })
+      .select("instructor")
+      .exec();
+
+    // if (req.user._id != courseFound.instructor._id) {
+    //   return res.status(400).send("Unauthorized");
+    // }
+    if (course.instructor._id != req.auth._id) {
+      return res.status(400).send('Unauthroized');
+    }
+
+    const updated = await Course.updateOne(
+      { "lessons._id": lessonId },
+      {
+        $set: {
+          "lessons.$.title": title,
+          "lessons.$.content": content,
+          "lessons.$.video": video,
+          "lessons.$.free_preview": free_preview,
+        },
+      },
+      { new: true }
+    ).exec();
+    console.log("updated => ", updated);
+    res.json({ ok: true });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send("Update lesson failed");
+  }
+};
