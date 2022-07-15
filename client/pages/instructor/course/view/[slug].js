@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import InstructorRoute from "../../../../components/routes/InstructorRoute";
 import axios from "axios";
 import { Avatar, Tooltip, Button, Modal, List } from "antd";
-import { EditOutlined, CheckOutlined, UploadOutlined } from "@ant-design/icons";
+import { EditOutlined, CheckOutlined, UploadOutlined, QuestionOutlined, CloseOutlined } from "@ant-design/icons";
 import ReactMarkdown from "react-markdown";
 import AddLessonForm from "../../../../components/forms/AddLessonForm";
 import { toast } from "react-toastify";
@@ -102,10 +102,18 @@ const CourseView = () => {
     }
   };
 
+  const handlePublish = (e, courseId) => {
+
+  }
+
+  const handleUnpublish = (e, courseId) => {
+    
+  }
+
   return (
     <InstructorRoute>
       <div className="contianer-fluid pt-3">
-      <pre>{JSON.stringify(course, null, 4)}</pre>
+        <pre>{JSON.stringify(course, null, 4)}</pre>
         {course && (
           <div className="container-fluid pt-1">
             <div className="media pt-2">
@@ -135,9 +143,13 @@ const CourseView = () => {
                         className="h5 pointer text-warning mr-4"
                       />
                     </Tooltip>
-                    <Tooltip title="Publish">
-                      <CheckOutlined className="h5 pointer text-danger" />
-                    </Tooltip>
+                    {course.lessons && course.lessons.length < 5 ? <Tooltip title="Min 5 lessons required to publish">
+                      <QuestionOutlined onClick={(e) => handleUnpublish(e, course._id)} className="h5 pointer text-danger" />
+                    </Tooltip> : course.published ? <Tooltip title="Unpublish">
+                      <CloseOutlined className="h5 pointer text-danger" />
+                    </Tooltip> : <Tooltip title="Publish">
+                      <CheckOutlined onClick={(e) => handlePublish(e, course._id)} className="h5 pointer text-success" />
+                    </Tooltip>}
                   </div>
                 </div>
               </div>
