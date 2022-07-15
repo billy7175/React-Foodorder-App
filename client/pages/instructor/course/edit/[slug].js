@@ -184,8 +184,27 @@ const CourseEdit = () => {
     setUploading(false);
   };
 
-  const handleUpdateLesson = () => {
-    console.log("handle update lesson");
+  const handleUpdateLesson = async (e) => {
+    e.preventDefault();
+    // console.log("CURRENT", current);
+    // console.log("**SEND TO BACKEND**");
+    // console.table({ values });
+    let { data } = await axios.put(
+      `/api/course/lesson/${slug}/${current._id}`,
+      current
+    );
+    // console.log("LESSON UPDATED AND SAVED ===> ", data);
+    setUploadButtonText("Upload video");
+    setProgress(0);
+    setVisible(false);
+    // update lessons
+    if (data.ok) {
+      let arr = values.lessons;
+      const index = arr.findIndex((el) => el._id === current._id);
+      arr[index] = current;
+      setValues({ ...values, lessons: arr });
+      toast("Lesson updated");
+    }
   };
 
   return (
