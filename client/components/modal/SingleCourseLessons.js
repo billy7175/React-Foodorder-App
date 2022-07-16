@@ -22,7 +22,18 @@ const SingleCourseLessons = ({
                 avatar={<Avatar>{index + 1}</Avatar>}
                 title={item.title}
               />
-        
+              {/* {JSON.stringify(item, null,4)} */}
+              {item.video && item.video !== null && item.free_preview && (
+                <span
+                  onClick={() => {
+                    setPreview(item.video.Location);
+                    setShowModal(!showModal);
+                  }}
+                  className="pointer text-primary"
+                >
+                  Preview
+                </span>
+              )}
             </Item>
           )}
         />
