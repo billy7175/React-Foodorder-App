@@ -14,8 +14,9 @@ const UserIndex = () => {
   },[])
 
   const loadCourses = async () => {
-    const {data} = await axios.get('/api/user-courses')
+    const { data } = await axios.get("/api/user-courses");
     setCourses(data)
+    console.log(3232323 ,data)
 
   }
 
@@ -25,7 +26,7 @@ const UserIndex = () => {
     <UserRoute>
       <h1 className="jumbotron text-center square bg-primary">
         <h2>can you see me ?</h2>
-        <pre>{JSON.stringify(user, null, 4)}</pre>
+        <pre>{JSON.stringify(courses, null, 4)}</pre>
       </h1>
     </UserRoute>
   );
