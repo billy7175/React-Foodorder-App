@@ -35,8 +35,16 @@ const SingleCourse = ({ course }) => {
         console.log('handle paid enrollment.')
     }
 
-    const handleFreeEnrollment = () => {
+    const handleFreeEnrollment = async (e) => {
         console.log('handle Free enrollment.')
+        e.preventDefault()
+        try {
+            setLoading(true)
+            const {data} = await axios.post(`/api/free-enrollment/${course._id}`)
+            console.log('Enrollemnt 성공', data.messaage)
+        } catch(error){
+            console.log('Enrollment failed.')
+        }
     }
 
     return (

@@ -361,3 +361,24 @@ export const checkEnrollment = async (req, res) => {
   })
 
 }
+
+export const freeEnrollment = async (req, res) => {
+  try {
+    // check if course is free or paid
+    const course = await Course.findById(req.params.courseId).exec()
+    if (course.paid) return;
+
+    const result = await User.findByIdAndUpdate(req.auth._id, {
+      $addToSet: { courses: course._id },
+    },
+      { new: true }
+    ).exec();
+
+    res.json({
+      message: 'Congradulations! You have successfully enrolled.',
+      course: result
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
