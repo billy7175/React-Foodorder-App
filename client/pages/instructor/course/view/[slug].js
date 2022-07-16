@@ -45,8 +45,9 @@ const CourseView = () => {
       );
       // console.log(data)
       setValues({ ...values, title: "", content: "", video: {} });
-      setVisible(false);
+      setProgress(0)
       setUploadButtonText("Upload video");
+      setVisible(false);
       setCourse(data);
       toast("Lesson added");
     } catch (err) {

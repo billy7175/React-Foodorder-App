@@ -280,7 +280,7 @@ export const publishCourse = async (req, res) => {
       .select("instructor")
       .exec();
     // is owner?
-    if(course.instructor._id != req.auth._id){
+    if (course.instructor._id != req.auth._id) {
       return res.status(400).send('unauthorized.')
     }
     // if (req.user._id != course.instructor._id) {
@@ -309,8 +309,7 @@ export const unpublishCourse = async (req, res) => {
       .select("instructor")
       .exec();
     // is owner?
-    
-    if(course.instructor._id != req.auth._id){
+    if (course.instructor._id != req.auth._id) {
       return res.status(400).send('unauthorized.')
     }
     // if (req.user._id != course.instructor._id) {
@@ -329,4 +328,17 @@ export const unpublishCourse = async (req, res) => {
     console.log(err);
     return res.status(400).send("Unpublish course failed");
   }
+};
+
+export const courses = async (req, res) => {
+  // console.log("all courses");
+  const all = await Course.find({ published: true })
+    // .limit(11)
+    // .select("-lessons")
+    .populate("instructor", "_id name")
+    // .populate("categories", "_id name")
+    .exec();
+  // console.log("============> ", all);
+  console.log('#allllll', all)
+  res.json(all);
 };
