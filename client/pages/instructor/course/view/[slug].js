@@ -102,12 +102,31 @@ const CourseView = () => {
     }
   };
 
-  const handlePublish = (e, courseId) => {
-
+  const handlePublish = async (e, courseId) => {
+    try {
+      let answer = window.confirm('Do you want to publish your course?')
+      if (!answer) return
+      const { data } = await axios.put(`/api/course/publish/${courseId}`)
+      setCourse(data)
+      console.log('Congrats! your course is not live')
+      toast('Congrats! your course is not live')
+    } catch (error) {
+      console.log('#ourse publish failed.')
+      toast('Course publish failed')
+    }
   }
 
-  const handleUnpublish = (e, courseId) => {
-    
+  const handleUnpublish = async (e, courseId) => {
+    try {
+      let answer = window.confirm('Do you want to unpublish your course?')
+      if(!answer) return 
+      const {data} = await axios.put(`/api/course/unpublish/${courseId}`)
+      setCourse(data)
+      toast('Your course is unpublished')
+    } catch (error) {
+      toast('Course publish failed.')
+    }
+
   }
 
   return (
