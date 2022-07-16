@@ -6,7 +6,7 @@ const SingleCourseJumbotron = ({ course, showModal, setShowModal, preview, setPr
   const { name, description, instructor, updateAt, lessons, image, price, paid, category } = course
 
   return (
-    <div class="jumbotron bg-primary square">
+    <div className="jumbotron bg-primary square">
     <div className="row">
         <div className="col-md-8">
             <h1 className="text-light font-weight-bold">{name}</h1>
