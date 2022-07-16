@@ -4,6 +4,7 @@ import Course from "../models/course";
 import sllugify from "slugify";
 import slugify from "slugify";
 import { readFileSync } from "fs";
+import testtest from "../middlewares";
 
 const awsConfig = {
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -268,5 +269,64 @@ export const updateLesson = async (req, res) => {
   } catch (err) {
     console.log(err);
     return res.status(400).send("Update lesson failed");
+  }
+};
+
+export const publishCourse = async (req, res) => {
+  try {
+    const { courseId } = req.params;
+    // find post
+    const course = await Course.findById(courseId)
+      .select("instructor")
+      .exec();
+    // is owner?
+    if(course.instructor._id != req.auth._id){
+      return res.status(400).send('unauthorized.')
+    }
+    // if (req.user._id != course.instructor._id) {
+    //   return res.status(400).send("Unauthorized");
+    // }
+
+    let updated = await Course.findByIdAndUpdate(
+      courseId,
+      { published: true },
+      { new: true }
+    ).exec();
+    // console.log("course published", course);
+    // return;
+    res.json(updated);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send("Publish course failed");
+  }
+};
+
+export const unpublishCourse = async (req, res) => {
+  try {
+    const { courseId } = req.params;
+    // find post
+    const course = await Course.findById(courseId)
+      .select("instructor")
+      .exec();
+    // is owner?
+    
+    if(course.instructor._id != req.auth._id){
+      return res.status(400).send('unauthorized.')
+    }
+    // if (req.user._id != course.instructor._id) {
+    //   return res.status(400).send("Unauthorized");
+    // }
+
+    let updated = await Course.findByIdAndUpdate(
+      courseId,
+      { published: false },
+      { new: true }
+    ).exec();
+    // console.log("course unpublished", course);
+    // return;
+    res.json(updated);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send("Unpublish course failed");
   }
 };

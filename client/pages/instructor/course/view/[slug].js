@@ -119,8 +119,8 @@ const CourseView = () => {
   const handleUnpublish = async (e, courseId) => {
     try {
       let answer = window.confirm('Do you want to unpublish your course?')
-      if(!answer) return 
-      const {data} = await axios.put(`/api/course/unpublish/${courseId}`)
+      if (!answer) return
+      const { data } = await axios.put(`/api/course/unpublish/${courseId}`)
       setCourse(data)
       toast('Your course is unpublished')
     } catch (error) {
@@ -163,10 +163,12 @@ const CourseView = () => {
                       />
                     </Tooltip>
                     {course.lessons && course.lessons.length < 5 ? <Tooltip title="Min 5 lessons required to publish">
-                      <QuestionOutlined onClick={(e) => handleUnpublish(e, course._id)} className="h5 pointer text-danger" />
-                    </Tooltip> : course.published ? <Tooltip title="Unpublish">
-                      <CloseOutlined className="h5 pointer text-danger" />
-                    </Tooltip> : <Tooltip title="Publish">
+                      <QuestionOutlined className="h5 pointer text-danger" />
+                    </Tooltip> : course.published ? 
+                    <Tooltip title="Unpublish">
+                      <CloseOutlined onClick={(e) => handleUnpublish(e, course._id)} className="h5 pointer text-danger" />
+                    </Tooltip> : 
+                    <Tooltip title="Publish">
                       <CheckOutlined onClick={(e) => handlePublish(e, course._id)} className="h5 pointer text-success" />
                     </Tooltip>}
                   </div>
