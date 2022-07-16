@@ -38,18 +38,27 @@ const SingleCourse = ({ course }) => {
     const handleFreeEnrollment = async (e) => {
         console.log('handle Free enrollment.')
         e.preventDefault()
+        // check if user is logged in 
+        // check if already enrolled
+        alert('handleFreeEnrollment')
+        if(!user) router.push("/login")
+        if(enrolled.status) return router.push(`/user/course/${enrolled.course.slug}`)
+        
         try {
             setLoading(true)
             const {data} = await axios.post(`/api/free-enrollment/${course._id}`)
+            setLoading(false)
+            router.push(`/user/course/${data.course.slug}`)
             console.log('Enrollemnt 성공', data.messaage)
         } catch(error){
+            setLoading(false)
             console.log('Enrollment failed.')
         }
     }
 
     return (
         <>
-
+            {JSON.stringify(course,null,4)}
             <SingleCourseJumbotron 
                 course={course} 
                 showModal={showModal} 

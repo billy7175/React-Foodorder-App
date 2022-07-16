@@ -376,7 +376,7 @@ export const freeEnrollment = async (req, res) => {
 
     res.json({
       message: 'Congradulations! You have successfully enrolled.',
-      course: result
+      course
     })
   } catch (error) {
     console.log(error)
