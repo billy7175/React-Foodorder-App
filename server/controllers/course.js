@@ -1,6 +1,7 @@
 import AWS from "aws-sdk";
 import { nanoid } from "nanoid";
 import Course from "../models/course";
+import User from "../models/user"
 import sllugify from "slugify";
 import slugify from "slugify";
 import { readFileSync } from "fs";
@@ -346,10 +347,11 @@ export const courses = async (req, res) => {
 export const checkEnrollment = async (req, res) => {
   const { courseId } = req.params
   // find courses of the currently logged in user
-  const user = await user.findById(req.auth._id).exec();
+  const user = await User.findById(req.auth._id).exec();
   //check if course id is found in user courses array
   let ids = []
-  for (let i = 0; i < user.courses.length; i++) {
+  let length = user.courses && user.courses.length
+  for (let i = 0; i < length; i++) {
     ids.push(user.courses[i].toString())
   }
 

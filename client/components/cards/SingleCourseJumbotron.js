@@ -12,7 +12,9 @@ const SingleCourseJumbotron = ({
     loading, 
     user,
     handlePaidEnrollment,
-    handleFreeEnrollment 
+    handleFreeEnrollment,
+    enrolled,
+    setEnrolled 
 }) => {
   const { name, description, instructor, updateAt, lessons, image, price, paid, category } = course
 
@@ -74,7 +76,11 @@ const SingleCourseJumbotron = ({
                     disabled={loading}
                     onClick={paid ? handlePaidEnrollment : handleFreeEnrollment}
                 >
-                    {user ? "Enroll" : "Login to enroll"}
+                    {user 
+                        ? enrolled.status 
+                            ? "Go to course" 
+                            : "Enroll" 
+                            : "Login to enroll"}
                 </Button>
             )}
         </div>
