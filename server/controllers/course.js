@@ -349,6 +349,7 @@ export const checkEnrollment = async (req, res) => {
   const { courseId } = req.params
   // find courses of the currently logged in user
   const user = await User.findById(req.auth._id).exec();
+  // console.log('찾았다',123123 ,user)
   //check if course id is found in user courses array
   let ids = []
   let length = user.courses && user.courses.length
